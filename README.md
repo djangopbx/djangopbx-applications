@@ -53,7 +53,7 @@ the application's `install.txt` file
 ```sh
 nano /home/django-pbx/pbx/pbx/urls.py
 ```
-Add the application to the INSTALLED_APPS list:
+Add the application to the urlpatterns list:
 ```python
 urlpatterns = [
     path('', include('portal.urls')),

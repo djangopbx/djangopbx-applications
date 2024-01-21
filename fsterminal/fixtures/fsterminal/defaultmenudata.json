@@ -1,0 +1,21 @@
+[
+{
+    "model": "portal.menuitem",
+    "pk": "4fcf133d-3815-423b-a1db-262ffd17b2db",
+    "fields": {
+        "menu_id": "5dc0b38c-7522-4c25-a2b9-d6f34d9828e3",
+        "parent_id": "043683c0-2436-4601-b5ff-4d6667935064",
+        "title": "Freeswitch ClI Terminal",
+        "link": "/fsterminal/term/",
+        "icon": null,
+        "category": "internal",
+        "protected": "true",
+        "sequence": "100100",
+        "description": "",
+        "created": "2024-01-21T21:50:49.296Z",
+        "updated": "2024-01-21T21:50:49.296Z",
+        "synchronised": null,
+        "updated_by": "system"
+    }
+}
+]

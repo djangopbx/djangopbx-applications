@@ -1,0 +1,57 @@
+
+Installation
+=============
+
+Most of these steps you will do logged in as the django-pbx user.
+However the two final steps will require root user priviledges.
+
+1. Copy application to DjangoPBX
+    cp -r fsterminal/ /home/django-pbx/pbx/fsterminal/
+
+2. Edit the setting.py file
+    Add the application to the INSTALLED_APPS list:
+    nano /home/django-pbx/pbx/pbx/settings.py
+
+    INSTALLED_APPS = [
+        'django.contrib.admin',
+        'django.contrib.auth',
+    ...
+        'autoreports.apps.AutoreportsConfig',
+        'fsterminal.apps.FsterminalConfig',
+    ]
+
+3. Edit the urls.py file
+    Add the fsterminal URLs
+    nano /home/django-pbx/pbx/pbx/urls.py
+
+    urlpatterns = [
+        path('', include('portal.urls')),
+        path('xmlhandler/', include('xmlhandler.urls')),
+        path('httapihandler/', include('httapihandler.urls')),
+        path('xmlcdr/', include('xmlcdr.urls')),
+    ...
+        path('autoreports/', include('autoreports.urls')),
+        path('fsterminal/', include('fsterminal.urls')),
+
+        path('api/', include(router.urls)),
+        path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    ]
+
+4. Run post installation processes
+    cd /home/django-pbx/pbx
+    python3 manage.py menudefaults
+    python3 manage.py collectstatic
+
+5.  Copy the fscmd.sh script
+    You will needd to be root for this.
+    cp /home/django-pbx//pbx/fsterminal/resources/usr/local/bin/fscmd.sh /usr/local/bin/
+
+6. Enable the updated DjangoPBX application
+    You will needd to be root for this.
+    uwsgi --reload /var/run/uwsgi/app/djangopbx/pid
+
+
+==========================================================================
+Thankyou for trying out the FreeSWITCH Terminal Application for DjangoPBX.
+==========================================================================
+

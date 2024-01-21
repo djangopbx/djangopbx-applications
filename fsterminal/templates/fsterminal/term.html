@@ -1,0 +1,166 @@
+{% extends "portal.html" %}
+
+{% load i18n static %}
+    {% block extrastyle %}
+        <link media="screen" rel="stylesheet" type="text/css" href="{% static 'script/xterm/css/xterm.css' %}" />
+    {% endblock %}
+    {% block extrabodyscript %}
+    <script src="{% static 'script/xterm/lib/xterm.js' %}"></script>
+    {% endblock %}
+
+
+    {% block content %}
+    <div class="card" style="margin-left: 5%; width: 90%;">
+        <div class="card-header">
+            <i class="fa fa-terminal"></i> {% translate 'Psudo fs_cli Teminal' %}
+        </div>
+        <div class="card-body cardbody1">
+        <p>{% translate 'For command output only, this will not display events, logging etc.' %}</p>
+        <div id="terminal"></div>
+        <script>
+        var command = '';
+        var cmdHistory = [
+            'fsctl loglevel debug',
+            'fsctl loglevel err',
+            'sofia status profile external',
+            'sofia status profile internal',
+            'show channels',
+            'show calls',
+            'show registrations',
+            'sofia status'
+        ]
+        var cmdHistoryIndex = 8
+
+        var baseTheme = {
+            foreground: '#F8F8F8',
+            background: '#2D2E2C',
+            selection: '#5DA5D533',
+            black: '#1E1E1D',
+            brightBlack: '#262625',
+            red: '#CE5C5C',
+            brightRed: '#FF7272',
+            green: '#5BCC5B',
+            brightGreen: '#72FF72',
+            yellow: '#CCCC5B',
+            brightYellow: '#FFFF72',
+            blue: '#5D5DD3',
+            brightBlue: '#7279FF',
+            magenta: '#BC5ED1',
+            brightMagenta: '#E572FF',
+            cyan: '#5DA5D5',
+            brightCyan: '#72F0FF',
+            white: '#F8F8F8',
+            brightWhite: '#FFFFFF'
+        };
+
+        var term = new Terminal({
+        cols: 120,
+        convertEol: true,
+        cursorBlink: true,
+        fontFamily: '"Cascadia Code", Menlo, monospace',
+        theme: baseTheme,
+        allowProposedApi: true
+        });
+
+        term.prompt = () => {
+            command = '';
+            term.write('\r\n\033[1;32m{{ prompt }}\x1B[0m> \033[s');
+        };
+
+        term.open(document.getElementById('terminal'));
+        term.writeln([
+            '\x1B[48;2;48;100;167m\x1B[38;2;193;159;0m.=======================================================.',
+            '|            _____ ____     ____ _     ___              |',
+            '|           |  ___/ ___|   / ___| |   |_ _|             |',
+            '|           | |_  \\___ \\  | |   | |    | |              |',
+            '|           |  _|  ___) | | |___| |___ | |              |',
+            '|           |_|   |____/   \\____|_____|___|             |',
+            '|                                                       |',
+            '.=======================================================.',
+            '| Anthony Minessale II, Ken Rice,                       |',
+            '| Michael Jerris, Travis Cross                          |',
+            '| FreeSWITCH (http://www.freeswitch.org)                |',
+            '| Paypal Donations Appreciated: paypal@freeswitch.org   |',
+            '| Brought to you by ClueCon http://www.cluecon.com/     |',
+            '.=======================================================.',
+            '\x1B[0m'
+        ].join('\n\r'));
+
+        term.prompt();
+        term.onData(e => {
+            //console.log(e)
+            //console.log(e.codePointAt(0))
+            //console.log(e.codePointAt(1))
+            //console.log(e.codePointAt(2))
+            switch (e) {
+                case '\u0003': // Ctrl+C
+                    term.write('^C');
+                    prompt(term);
+                    break;
+                case '\r': // Enter
+                    runCommand(term, command);
+                    command = '';
+                    break;
+                case '\u007F': // Backspace (DEL)
+                    // Do not delete the prompt
+                    if (term._core.buffer.x > {{ promptlen }}) {
+                        term.write('\b \b');
+                        if (command.length > 0) {
+                            command = command.substr(0, command.length - 1);
+                        }
+                    }
+                break;
+                case '\x1B[A': // Up
+                    if (cmdHistoryIndex > 0) {
+                        cmdHistoryIndex--;
+                    }
+                    if (cmdHistory.length > 0) {
+                        command = cmdHistory[cmdHistoryIndex];
+                        term.write('\033[u\033[K' + command);
+                    }
+                    break;
+                case '\x1B[B': // Down
+                    if (cmdHistoryIndex < cmdHistory.length) {
+                        cmdHistoryIndex++;
+                    }
+                    if (cmdHistoryIndex < cmdHistory.length) {
+                        command = cmdHistory[cmdHistoryIndex];
+                        term.write('\033[u\033[K' + command);
+                    } else {
+                        command = "";
+                        term.write('\033[u\033[K');
+                    }
+                    break;
+                default: // Print all other characters for demo
+                    if (e >= String.fromCharCode(0x20) && e <= String.fromCharCode(0x7E) || e >= '\u00a0') {
+                        command += e;
+                        term.write(e);
+                    }
+            }
+        });
+
+        function runCommand(term, text) {
+            const command = text.trim();
+            if (command.length > 0) {
+                if (command != cmdHistory[cmdHistory.length - 1]) {
+                    cmdHistory.push(command)
+                }
+                cmdHistoryIndex = cmdHistory.length
+                term.writeln('');
+                $.get("/fsterminal/cmd/?fscmd=" + encodeURIComponent(command), (data, status) => {
+                    term.write(data, () => {
+                        // wait until finished processing `data`
+                        term.prompt();
+                    });
+                }, 'text');
+            } else {
+                term.prompt();
+            }
+        }
+
+        </script>
+        </div>
+    </div>
+
+    {% endblock %}
+
