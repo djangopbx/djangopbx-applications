@@ -1,6 +1,6 @@
 DjangoPBX Applications
 --------------------------------------
-This repository is for additional applications for the DjangoPBX project,
+This repository is for additional applications for the DjangoPBX project
 that are not part of the core distribution.
 
 ### Additional functionality
@@ -8,15 +8,15 @@ These applications are designed to provide additional functionality for DjangoPB
 Contributions are always very welcome.
 
 ## Installation
-Installation of an application is fairly straightforward, the basic steps are listed below.
-Most applications should contain an install.txt file that will guide you through and specific
-steps you may need to undertake for an individula application.
+Installation of an application is fairly straightforward and the basic steps are listed below.
+Most applications should contain an install.txt file that will guide you through any specific
+steps you may need to undertake for an individual application.
 * Clone this repository.
 * Copy the application(s) you are interested in to /home/django-pbx/pbx/
 * Add your new application to the INSTALLED_APPS list in /home/django-pbx/pbx/pbx/settings.py
 
 
-Here are the steps in alittle more detail, we will use the fsterminal application as an example.
+Here are the steps in a little more detail; we will use the fsterminal application as an example.
 These steps should be done logged in as the django-pbx user:
 
 ### Clone the repository
@@ -46,8 +46,8 @@ INSTALLED_APPS = [
 ]
 ```
 ### Additional Steps
-Some application may require some additional installation steps.  Always check
-the applications `install.txt` file
+Some applications may require additional installation steps.  Always check
+the application's `install.txt` file
 
 ###  Editind the urls.py file
 ```sh
@@ -69,7 +69,7 @@ urlpatterns = [
 ]
 ```
 ###  Run post installation processes
-You must be logged in as the django-pbx user and ensure the an virtual environments are activated.
+You must be logged in as the django-pbx user and ensure the virtual environment is activated.
 With a venv activated your prompt should look like: (envdpbx) django-pbx@myserver:~$.
 The key thing is the environment shown in brackets.
 
@@ -79,28 +79,28 @@ cd /home/django-pbx/pbx
 python3 manage.py migrate
 ```
 
-If the new application has any staic files like javascript libraries or stylesheets then run collectstatic
+If the new application has any static files like javascript libraries or stylesheets then run collectstatic:
 ```sh
 cd /home/django-pbx/pbx
 python3 manage.py collectstatic
 ```
 
 If the new application adds any items to the Navigation bar menu then run menudefaults to
-add the new menu items.
+add the new menu items:
 ```sh
 cd /home/django-pbx/pbx
 python3 manage.py menudefaults
 ```
 
 If the new application adds any new dialplans then run dialplandefaults to
-add the new dialplans.
+add the new dialplans:
 ```sh
 cd /home/django-pbx/pbx
 python3 manage.py dialplandefaults
 ```
 
 ###  Finally enable the updated DjangoPBX application
-You will need to do this as the root user.
+You will need to do this as the root user:
 ```sh
 uwsgi --reload /var/run/uwsgi/app/djangopbx/pid
 ```
