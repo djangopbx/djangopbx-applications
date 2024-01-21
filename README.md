@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 Some applications may require additional installation steps.  Always check
 the application's `install.txt` file
 
-###  Editind the urls.py file
+###  Editing the urls.py file
 ```sh
 nano /home/django-pbx/pbx/pbx/urls.py
 ```
