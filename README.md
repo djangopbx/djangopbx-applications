@@ -43,10 +43,71 @@ INSTALLED_APPS = [
     'autoreports.apps.AutoreportsConfig',
     'fsterminal.apps.FsterminalConfig',
 ]
+```
+### Additional Steps
+Some application may require some additional installation steps.  Always check
+the applications `install.txt` file
 
+###  Editind the urls.py file
+```sh
+nano /home/django-pbx/pbx/pbx/urls.py
+```
+Add the application to the INSTALLED_APPS list:
+```python
+urlpatterns = [
+    path('', include('portal.urls')),
+    path('xmlhandler/', include('xmlhandler.urls')),
+    path('httapihandler/', include('httapihandler.urls')),
+    path('xmlcdr/', include('xmlcdr.urls')),
+...
+    path('autoreports/', include('autoreports.urls')),
+    path('fsterminal/', include('fsterminal.urls')),
+
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+]
+```
+###  Run post installation processes
+You must be logged in as the django-pbx user and ensure the an virtual environments are activated.
+With a venv activated your prompt should look like: (envdpbx) django-pbx@myserver:~$.
+The key thing is the environment shown in brackets.
+
+If the new application makes changes to the database then we must run a migration:
+```sh
+cd /home/django-pbx/pbx
+python3 manage.py migrate
 ```
 
+If the new application has any staic files like javascript libraries or stylesheets then run collectstatic
+```sh
+cd /home/django-pbx/pbx
+python3 manage.py collectstatic
+```
 
+If the new application adds any items to the Navigation bar menu then run menudefaults to
+add the new menu items.
+```sh
+cd /home/django-pbx/pbx
+python3 manage.py menudefaults
+```
+
+If the new application adds any new dialplans then run dialplandefaults to
+add the new dialplans.
+```sh
+cd /home/django-pbx/pbx
+python3 manage.py dialplandefaults
+```
+
+###  Finally enable the updated DjangoPBX application
+You will need to do this a the root user.
+```sh
+uwsgi --reload /var/run/uwsgi/app/djangopbx/pid
+```
+
+In the unlikely event that a new application affects the dynamic configuration of FreeSWITCH:
+```sh
+uwsgi --reload /var/run/uwsgi/app/fs_config/pid
+```
 
 
 ## License Agreement
