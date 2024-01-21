@@ -15,6 +15,7 @@ steps you may need to undertake for an individula application.
 * Copy the application(s) you are interested in to /home/django-pbx/pbx/
 * Add your new application to the INSTALLED_APPS list in /home/django-pbx/pbx/pbx/settings.py
 
+
 Here are the steps in alittle more detail, we will use the fsterminal application as an example.
 These steps should be done logged in as the django-pbx user:
 
@@ -99,7 +100,7 @@ python3 manage.py dialplandefaults
 ```
 
 ###  Finally enable the updated DjangoPBX application
-You will need to do this a the root user.
+You will need to do this as the root user.
 ```sh
 uwsgi --reload /var/run/uwsgi/app/djangopbx/pid
 ```
