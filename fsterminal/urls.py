@@ -32,5 +32,7 @@ from . import views
 
 urlpatterns = [
     path('term/', views.fsterminal, name='term'),
+    path('term/<str:host>/', views.fsterminal, name='term'),
     path('cmd/', views.fsterminalcmd, name='cmd'),
+    path('cmd/<str:host>/', views.fsterminalcmd, name='cmd'),
 ]

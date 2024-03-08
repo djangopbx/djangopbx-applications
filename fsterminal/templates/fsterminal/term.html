@@ -15,6 +15,14 @@
             <i class="fa fa-terminal"></i> {% translate 'Psudo fs_cli Teminal' %}
         </div>
         <div class="card-body cardbody1">
+        {% if links %}
+          <p><a class="btn btn-info btn-sm" data-toggle="collapse" href="#collapseLinks" role="button" aria-expanded="false" aria-controls="collapseLinks">{{ linkstitle }}</a></p>
+        <div class="collapse" id="collapseLinks"><p>
+            {% for key, value in links.items %}
+            <a href="{{ value }}">{{ key }}</a> &nbsp;
+            {% endfor %}
+        </p></div>
+        {% endif %}
         <p>{% translate 'For command output only, this will not display events, logging etc.' %}</p>
         <div id="terminal"></div>
         <script>
@@ -55,6 +63,7 @@
 
         var term = new Terminal({
         cols: 120,
+        rows: 30,
         convertEol: true,
         cursorBlink: true,
         fontFamily: '"Cascadia Code", Menlo, monospace',
@@ -147,7 +156,7 @@
                 }
                 cmdHistoryIndex = cmdHistory.length
                 term.writeln('');
-                $.get("/fsterminal/cmd/?fscmd=" + encodeURIComponent(command), (data, status) => {
+                $.get("/fsterminal/cmd/{{ host }}/?fscmd=" + encodeURIComponent(command), (data, status) => {
                     term.write(data, () => {
                         // wait until finished processing `data`
                         term.prompt();

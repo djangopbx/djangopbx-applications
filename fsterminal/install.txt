@@ -42,11 +42,7 @@ However the two final steps will require root user priviledges.
     python3 manage.py menudefaults
     python3 manage.py collectstatic
 
-5.  Copy the fscmd.sh script
-    You will needd to be root for this.
-    cp /home/django-pbx//pbx/fsterminal/resources/usr/local/bin/fscmd.sh /usr/local/bin/
-
-6. Enable the updated DjangoPBX application
+5. Enable the updated DjangoPBX application
     You will needd to be root for this.
     uwsgi --reload /var/run/uwsgi/app/djangopbx/pid
 
