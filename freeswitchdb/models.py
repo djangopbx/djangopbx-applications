@@ -102,7 +102,7 @@ class Calls(models.Model):
     call_created_epoch = models.IntegerField(blank=True, null=True, verbose_name=_('Call Created Epoch'))  # noqa: E501, E221
     caller_uuid        = models.TextField(blank=True, null=True, verbose_name=_('Caller UUId'))            # noqa: E501, E221
     callee_uuid        = models.TextField(blank=True, null=True, verbose_name=_('Callee UUId'))            # noqa: E501, E221
-    hostname           = models.TextField(blank=True, null=True, verbose_name=_('Hostanme'))               # noqa: E501, E221
+    hostname           = models.TextField(blank=True, null=True, verbose_name=_('Hostname'))               # noqa: E501, E221
 
     class Meta:
         managed = False

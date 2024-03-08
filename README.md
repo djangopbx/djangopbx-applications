@@ -32,6 +32,10 @@ cp -r fsterminal/ /home/django-pbx/pbx/fsterminal/
 ```
 
 ### Edit the setting.py file
+Please note that some applicationss may already have a settings entry
+that is commented out, if you find this to be the case for the application you are
+installing, then simply remove the # to enable the application.
+
 ```sh
 nano /home/django-pbx/pbx/pbx/settings.py
 ```
@@ -50,6 +54,11 @@ Some applications may require additional installation steps.  Always check
 the application's `install.txt` file
 
 ###  Editing the urls.py file
+Please note that some applicationss may already have a
+url pattern or API router entry that is commented out, 
+if you find this to be the case for the application you are
+installing, then simply remove the # to enable the URL(s).
+
 ```sh
 nano /home/django-pbx/pbx/pbx/urls.py
 ```
@@ -69,6 +78,9 @@ urlpatterns = [
 ]
 ```
 ###  Run post installation processes
+These actions may not be required for every application, please refer to the install.txt
+file in the application you are intending to install.
+
 You must be logged in as the django-pbx user and ensure the virtual environment is activated.
 With a venv activated your prompt should look like: (envdpbx) django-pbx@myserver:~$.
 The key thing is the environment shown in brackets.
